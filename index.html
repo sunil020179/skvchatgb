@@ -263,35 +263,3 @@
   </script>
 </body>
 </html>
-// api/chat-country.js (Vercel serverless function)
-export default async function handler(req, res) {
-  if (req.method !== 'POST') return res.status(405).send('Method not allowed');
-  const { user, country } = req.body || {};
-  if (!user) return res.status(400).send('`user` message is required');
-
-  const countryConfigs = {
-    AE: { system: "You are assistant for UAE business setup, VAT, freezones." },
-    IN: { system: "You are assistant for India GST, MCA incorporation, compliance." },
-    SA: { system: "You are assistant for KSA ZATCA, MISA, CR, visas." },
-    QA: { system: "You are assistant for Qatar CR, taxation, free zones." }
-  };
-  const cc = countryConfigs[country] || countryConfigs.AE;
-
-  const r = await fetch("https://api.openai.com/v1/responses", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      "Authorization": `Bearer ${process.env.OPENAI_API_KEY}`
-    },
-    body: JSON.stringify({
-      model: process.env.OPENAI_MODEL || "gpt-4o-mini",
-      input: [
-        { role: "system", content: cc.system },
-        { role: "user", content: user }
-      ]
-    })
-  });
-
-  const data = await r.json();
-  res.status(200).json(data);
-}
