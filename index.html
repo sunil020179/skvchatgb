@@ -1,277 +1,265 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>SKVChatGB — Advanced AI Chatbot Platform</title>
-  <meta name="description" content="SKVChatGB: Your smart, fast and secure AI chatbot platform for websites, WhatsApp and more." />
-  <link rel="icon" href="https://fav.farm/🤖" />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet" />
-  <script src="https://cdn.tailwindcss.com"></script>
+  <title>SKVChatGB – Build delightful chat experiences</title>
+  <meta name="description" content="A fast, secure and customizable AI chatbot for your website, WhatsApp, and support inbox.">
   <style>
-    :root {
-      --brand:#5b6cff;
-      --brand-2:#8e9bff;
-      --ink:#0b1020;
+    :root{
+      --bg:#0b1021; --fg:#e5e7eb; --muted:#9aa0aa; --card:#0f1530;
+      --brand:#6ea8fe; --btn:#111827; --white:#fff; --chip:#eef2ff;
+      --shadow:0 10px 40px rgba(0,0,0,.25);
     }
-    html,body{scroll-behavior:smooth;background:radial-gradient(1200px 600px at 10% -10%, rgba(91,108,255,.15), transparent), radial-gradient(1000px 500px at 100% 10%, rgba(142,155,255,.15), transparent) #0b0f19;color:#e6e9f2;}
-    .font-display{font-family:"Playfair Display",serif}
-    .font-sans{font-family:"Inter",system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,"Apple Color Emoji","Segoe UI Emoji";}
-    .btn{display:inline-flex;align-items:center;gap:.5rem;padding:.9rem 1.25rem;border-radius:999px;font-weight:700}
-    .btn-primary{background:linear-gradient(135deg,var(--brand),var(--brand-2));color:#fff}
-    .btn-primary:hover{filter:brightness(1.05);transform:translateY(-1px)}
-    .btn-ghost{border:2px solid rgba(255,255,255,.2)}
-    .glass{backdrop-filter:blur(10px);background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08)}
-    .chip{border:1px solid rgba(255,255,255,.15);background:rgba(255,255,255,.05)}
-    .shadow-soft{box-shadow:0 12px 30px rgba(0,0,0,.35)}
+    *{box-sizing:border-box}
+    body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial;background:var(--bg);color:var(--fg)}
+    a{color:inherit;text-decoration:none}
+    .container{max-width:1100px;margin:0 auto;padding:16px}
+    .nav{display:flex;align-items:center;justify-content:space-between;padding:10px 0}
+    .brand{display:flex;gap:10px;align-items:center}
+    .brand .logo{width:28px;height:28px;border-radius:8px;background:linear-gradient(135deg,#6ea8fe,#9b8cff)}
+    .nav a.btn{padding:10px 14px;border-radius:10px;background:#1f2937}
+    .hero{display:grid;grid-template-columns:1.1fr .9fr;gap:20px;align-items:center;margin-top:20px}
+    @media (max-width:900px){.hero{grid-template-columns:1fr}}
+    .title{font-weight:700;line-height:1.1;font-size:clamp(28px,5vw,44px)}
+    .subtitle{color:var(--muted);margin-top:10px}
+    .cta{display:flex;gap:10px;margin-top:18px;flex-wrap:wrap}
+    .cta .btn{padding:12px 16px;border-radius:12px;border:none;cursor:pointer}
+    .btn.primary{background:var(--brand);color:#0b1021;font-weight:600;box-shadow:var(--shadow)}
+    .btn.secondary{background:#1f2937;color:#fff}
+    .chip{display:inline-flex;gap:8px;align-items:center;background:var(--chip);color:#1f2937;padding:6px 10px;border-radius:999px;font-size:12px}
+    .card{background:var(--card);border:1px solid rgba(255,255,255,0.06);border-radius:16px;box-shadow:var(--shadow)}
+    .demo{padding:14px}
+    .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+    .select,input,textarea,button{font:inherit}
+    select,input,textarea{background:#0e1636;color:var(--fg);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:10px}
+    textarea{width:100%;min-height:110px;resize:vertical}
+    .status{font-size:12px;color:var(--muted)}
+    .chatwrap{padding:14px}
+    .bubble{background:#101a3f;border:1px solid rgba(255,255,255,.06);padding:10px 12px;border-radius:12px;max-width:95%}
+    .chat{display:flex;flex-direction:column;gap:10px;max-height:360px;overflow:auto;padding:8px}
+    .chat .me{align-items:flex-end;display:flex}
+    .chat .bot{align-items:flex-start;display:flex}
+    .chat .me .bubble{background:#1b2a68}
+    .inpbar{display:flex;gap:10px;margin-top:10px}
+    .send{background:#111827;color:#fff;border:none;border-radius:12px;padding:10px 14px;cursor:pointer}
+    .contact{display:flex;gap:10px;align-items:center}
+    .contact .whatsapp{display:inline-flex;gap:8px;align-items:center;background:#25D366;color:#0b1021;padding:8px 12px;border-radius:999px;font-weight:600}
+    footer{opacity:.7;font-size:12px;margin:22px 0}
   </style>
 </head>
-<body class="font-sans">
-
-  <!-- Nav -->
-  <header class="sticky top-0 z-40 bg-[#0b0f19]/80 backdrop-blur border-b border-white/5">
-    <nav class="max-w-7xl mx-auto px-5 py-4 flex items-center justify-between">
-      <a href="#home" class="flex items-center gap-3">
-        <span class="text-2xl">🤖</span>
-        <strong class="text-lg md:text-xl tracking-wide">SKVChatGB</strong>
-      </a>
-      <div class="hidden md:flex items-center gap-6 text-sm text-white/80">
-        <a href="#features" class="hover:text-white">Features</a>
-        <a href="#pricing" class="hover:text-white">Pricing</a>
-        <a href="#demo" class="hover:text-white">Demo</a>
-        <a href="#about" class="hover:text-white">About</a>
-        <a href="#contact" class="hover:text-white">Contact</a>
+<body>
+  <div class="container">
+    <!-- Top Nav -->
+    <div class="nav">
+      <div class="brand">
+        <div class="logo"></div>
+        <b>SKVChatGB</b>
       </div>
-      <div class="flex items-center gap-3">
-        <a class="btn btn-ghost hidden sm:inline-flex" href="#contact">Talk to Sales</a>
-        <a class="btn btn-primary" href="#demo">Try Demo</a>
+      <div class="row">
+        <a class="btn" href="#features">Features</a>
+        <a class="btn" href="#pricing">Pricing</a>
+        <a class="btn" href="#contact">Contact</a>
+        <a class="btn" href="mailto:hello@skvchatgb.com">Talk to Sales</a>
       </div>
-    </nav>
-  </header>
+    </div>
 
-  <!-- Hero -->
-  <section id="home" class="relative overflow-hidden">
-    <div class="max-w-7xl mx-auto px-5 py-16 md:py-24 grid md:grid-cols-2 gap-10 items-center">
+    <!-- Hero -->
+    <section class="hero">
       <div>
-        <p class="chip inline-block px-3 py-1 rounded-full text-xs tracking-wider uppercase text-white/70">New • v1.0</p>
-        <h1 class="font-display text-4xl md:text-6xl leading-tight mt-4">
-          Build delightful chat experiences with <span class="text-[var(--brand-2)]">SKVChatGB</span>
-        </h1>
-        <p class="text-white/80 text-lg md:text-xl mt-5">
-          A fast, secure and customizable AI chatbot for your website, WhatsApp, and support inbox—no code required.
-        </p>
-        <div class="mt-7 flex gap-3">
-          <a href="#pricing" class="btn btn-primary">Get Started</a>
-          <a href="#features" class="btn btn-ghost">See Features</a>
+        <span class="chip">NEW – v1.0</span>
+        <h1 class="title">Build delightful chat experiences with <span style="color:#9b8cff">SKVChatGB</span></h1>
+        <p class="subtitle">A fast, secure and customizable AI chatbot for your website, WhatsApp, and support inbox—no code required.</p>
+        <div class="cta">
+          <a class="btn primary" href="#live">Get Started</a>
+          <a class="btn secondary" href="#features">See Features</a>
         </div>
-        <p class="mt-3 text-xs text-white/50">No credit card required • 14-day free trial</p>
-      </div>
-
-      <!-- Chat preview -->
-      <div class="glass rounded-2xl p-4 md:p-6 shadow-soft">
-        <div class="flex items-center gap-3 pb-4 border-b border-white/10">
-          <span class="w-2 h-2 rounded-full bg-green-400"></span>
-          <p class="text-sm text-white/70">Live Demo</p>
-        </div>
-        <div id="chatBox" class="mt-4 space-y-4 text-[15px] leading-relaxed">
-          <!-- messages injected by JS -->
-        </div>
-        <div class="mt-5 flex items-center gap-2">
-          <input id="chatInput" class="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 outline-none focus:border-[var(--brand-2)]" placeholder="Type a message..." />
-          <button id="sendBtn" class="btn btn-primary">Send</button>
+        <div class="contact" style="margin-top:14px">
+          <span class="chip" id="contactBadge">📞 +971-5X-XXX-XXXX • support@skvchatgb.com</span>
+          <a class="whatsapp" id="waLink" target="_blank" rel="noopener">WhatsApp Us</a>
         </div>
       </div>
-    </div>
-  </section>
 
-  <!-- Logos -->
-  <section class="py-6">
-    <div class="max-w-7xl mx-auto px-5 grid grid-cols-2 md:grid-cols-5 gap-6 opacity-70">
-      <div class="glass rounded-xl p-4 text-center">Stripe</div>
-      <div class="glass rounded-xl p-4 text-center">Slack</div>
-      <div class="glass rounded-xl p-4 text-center">Shopify</div>
-      <div class="glass rounded-xl p-4 text-center">WordPress</div>
-      <div class="glass rounded-xl p-4 text-center">WhatsApp</div>
-    </div>
-  </section>
-
-  <!-- Features -->
-  <section id="features" class="py-14 md:py-20">
-    <div class="max-w-7xl mx-auto px-5">
-      <h2 class="font-display text-3xl md:text-5xl text-center">Everything you need</h2>
-      <p class="text-center text-white/70 mt-3 max-w-2xl mx-auto">Train on your docs, deploy in minutes, and scale with confidence.</p>
-
-      <div class="mt-10 grid md:grid-cols-3 gap-6">
-        <article class="glass rounded-2xl p-6">
-          <h3 class="font-semibold text-xl">Smart & Helpful</h3>
-          <p class="text-white/70 mt-2">Uses your knowledge base and policies to answer precisely.</p>
-        </article>
-        <article class="glass rounded-2xl p-6">
-          <h3 class="font-semibold text-xl">Fast Responses</h3>
-          <p class="text-white/70 mt-2">Optimized for low latency on global edge network.</p>
-        </article>
-        <article class="glass rounded-2xl p-6">
-          <h3 class="font-semibold text-xl">Secure by Default</h3>
-          <p class="text-white/70 mt-2">Audit logs, rate limits, and data residency options.</p>
-        </article>
-        <article class="glass rounded-2xl p-6">
-          <h3 class="font-semibold text-xl">Customizable UI</h3>
-          <p class="text-white/70 mt-2">Match your brand in a few lines of CSS.</p>
-        </article>
-        <article class="glass rounded-2xl p-6">
-          <h3 class="font-semibold text-xl">Analytics</h3>
-          <p class="text-white/70 mt-2">Track satisfaction, deflection, and conversions.</p>
-        </article>
-        <article class="glass rounded-2xl p-6">
-          <h3 class="font-semibold text-xl">Omnichannel</h3>
-          <p class="text-white/70 mt-2">Website, WhatsApp, Instagram & more.</p>
-        </article>
-      </div>
-    </div>
-  </section>
-
-  <!-- Pricing -->
-  <section id="pricing" class="py-14 md:py-20 border-y border-white/5">
-    <div class="max-w-7xl mx-auto px-5">
-      <h2 class="font-display text-3xl md:text-5xl text-center">Simple pricing</h2>
-      <p class="text-center text-white/70 mt-3">Start free, grow as you need.</p>
-
-      <div class="mt-10 grid md:grid-cols-3 gap-6">
-        <div class="glass rounded-2xl p-6">
-          <p class="text-sm text-white/60">Starter</p>
-          <p class="text-3xl font-extrabold mt-2">$0</p>
-          <ul class="mt-4 space-y-2 text-white/80 text-sm">
-            <li>• 200 messages / month</li>
-            <li>• Basic widget</li>
-            <li>• Community support</li>
-          </ul>
-          <a href="#demo" class="btn btn-ghost mt-6 w-full text-center">Try Free</a>
+      <!-- Live Demo Card -->
+      <div class="card demo" id="live">
+        <div class="row" style="justify-content:space-between">
+          <b>Live Demo</b>
+          <div class="row">
+            <select id="countrySelect" class="select">
+              <!-- Populated by JS -->
+            </select>
+            <span class="chip">🌍 <b id="cc">AE</b></span>
+          </div>
         </div>
-        <div class="glass rounded-2xl p-6 border border-[var(--brand-2)]">
-          <p class="text-sm text-white/60">Pro</p>
-          <p class="text-3xl font-extrabold mt-2">$29</p>
-          <ul class="mt-4 space-y-2 text-white/80 text-sm">
-            <li>• 5k messages / month</li>
-            <li>• Knowledge base + analytics</li>
-            <li>• Email support</li>
-          </ul>
-          <a href="#contact" class="btn btn-primary mt-6 w-full text-center">Upgrade</a>
-        </div>
-        <div class="glass rounded-2xl p-6">
-          <p class="text-sm text-white/60">Enterprise</p>
-          <p class="text-3xl font-extrabold mt-2">Custom</p>
-          <ul class="mt-4 space-y-2 text-white/80 text-sm">
-            <li>• SSO, SLA, SOC2</li>
-            <li>• On-prem / VPC</li>
-            <li>• Dedicated support</li>
-          </ul>
-          <a href="#contact" class="btn btn-ghost mt-6 w-full text-center">Contact Sales</a>
+
+        <div class="chatwrap">
+          <div class="chat" id="chat">
+            <div class="bot"><div class="bubble">Hi! I am SKVChatGB. How can I help you today?</div></div>
+          </div>
+
+          <div class="inpbar">
+            <input id="user" placeholder="Type a message..." style="flex:1" />
+            <button class="send" id="send">Send</button>
+          </div>
+          <div class="status" id="status"></div>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- Demo -->
-  <section id="demo" class="py-14 md:py-20">
-    <div class="max-w-4xl mx-auto px-5 text-center">
-      <h2 class="font-display text-3xl md:text-5xl">Live demo</h2>
-      <p class="text-white/70 mt-3">Ask anything about SKVChatGB below.</p>
-      <div class="glass rounded-2xl p-6 mt-8 text-left shadow-soft">
-        <div id="demoBox" class="space-y-4 text-[15px]">
-          <!-- seeded by JS -->
-        </div>
-      </div>
-    </div>
-  </section>
+    <footer>© <span id="yr"></span> SKVChatGB. All rights reserved.</footer>
+  </div>
 
-  <!-- About -->
-  <section id="about" class="py-14 md:py-20">
-    <div class="max-w-6xl mx-auto px-5 grid md:grid-cols-2 gap-10 items-center">
-      <div>
-        <h2 class="font-display text-3xl md:text-5xl">About SKVChatGB</h2>
-        <p class="text-white/80 mt-4 leading-relaxed">
-          We help businesses deliver instant, accurate support with an AI assistant trained on your content.
-          Built by SKV Business Service LLC.
-        </p>
-        <a href="#contact" class="btn btn-primary mt-6">Work with us</a>
-      </div>
-      <div class="glass rounded-2xl p-4 aspect-video grid place-items-center text-white/60">
-        Add an image or product video here
-      </div>
-    </div>
-  </section>
-
-  <!-- Contact -->
-  <section id="contact" class="py-14 md:py-20 border-t border-white/5">
-    <div class="max-w-5xl mx-auto px-5 text-center">
-      <h2 class="font-display text-3xl md:text-5xl">Contact</h2>
-      <p class="text-white/70 mt-3">Email us or book a quick call.</p>
-      <div class="mt-8 flex flex-col md:flex-row gap-4 justify-center">
-        <a class="btn btn-primary" href="mailto:sunilroyalfalcon@gmail.com">✉️ Email</a>
-        <a class="btn btn-ghost" href="tel:+97143591532">📞 +971 4 359 1532</a>
-        <a class="btn btn-ghost" href="https://wa.me/97143591532" target="_blank" rel="noopener">💬 WhatsApp</a>
-      </div>
-    </div>
-  </section>
-
-  <!-- Footer -->
-  <footer class="py-10 border-t border-white/5 text-center text-white/60 text-sm">
-    <p>© 2025 SKV Business Service LLC – SKVChatGB</p>
-  </footer>
-
-  <!-- Scripts -->
   <script>
-    // Seed chat preview
-    const chatBox = document.getElementById('chatBox');
-    const chatInput = document.getElementById('chatInput');
-    const sendBtn = document.getElementById('sendBtn');
+    // --- Country config inline (बाद में आप countries.json से भी लोड कर सकते हैं) ---
+    const CFG = {
+      defaultCountry: "AE",
+      countries: {
+        "AE": {
+          name: "United Arab Emirates",
+          lang: "en",  // आप चाहें तो "hi" कर दें
+          contact: { phone: "+971-5X-XXX-XXXX", email: "support-ae@skvchatgb.com", whatsapp: "9715XXXXXXXX" },
+          system: "You are an assistant for SKV Business Services in UAE. Focus on UAE company setup, VAT(5%), corporate tax, freezones, visa, PRO services. Keep answers concise and helpful.",
+          model: "gpt-4o-mini"
+        },
+        "IN": {
+          name: "India",
+          lang: "hi",
+          contact: { phone: "+91-9X-XXXX-XXXX", email: "support-in@skvchatgb.com", whatsapp: "91XXXXXXXXXX" },
+          system: "You are an assistant for SKV Business Services in India. Focus on GST, MCA incorporation, MSME, FSSAI, IEC, and compliance.",
+          model: "gpt-4o-mini"
+        },
+        "SA": {
+          name: "Saudi Arabia",
+          lang: "ur",
+          contact: { phone: "+966-5X-XXX-XXXX", email: "support-sa@skvchatgb.com", whatsapp: "9665XXXXXXXX" },
+          system: "You are an assistant for SKV Business Services in KSA. Focus on MISA license, ZATCA e-invoicing, CR, visas, labor rules.",
+          model: "gpt-4o-mini"
+        },
+        "QA": {
+          name: "Qatar",
+          lang: "en",
+          contact: { phone: "+974-5X-XXX-XXXX", email: "support-qa@skvchatgb.com", whatsapp: "9745XXXXXXXX" },
+          system: "You are an assistant for SKV Business Services in Qatar. Focus on CR, visas, taxation, free zones, and local compliance.",
+          model: "gpt-4o-mini"
+        }
+      }
+    };
 
-    const seed = [
-      {role:'assistant',text:'Hi! I am SKVChatGB. How can I help you today?'},
-      {role:'user',text:'Can you integrate with WhatsApp and my website?'},
-      {role:'assistant',text:'Yes! SKVChatGB supports website widget + WhatsApp, and more. Setup takes minutes.'}
-    ];
+    const $ = s => document.querySelector(s);
+    const chat = $("#chat");
+    const ccEl = $("#cc");
+    const statusEl = $("#status");
+    const yearEl = $("#yr");
+    yearEl.textContent = new Date().getFullYear();
 
-    function bubble(role, text){
-      const wrap = document.createElement('div');
-      wrap.className = role==='user' ? 'flex justify-end' : 'flex';
-      const b = document.createElement('div');
-      b.className = 'max-w-[80%] rounded-2xl px-4 py-3 ' + (role==='user' ? 'bg-white/15' : 'bg-white/5');
-      b.textContent = text;
-      wrap.appendChild(b);
-      chatBox.appendChild(wrap);
-      chatBox.scrollTop = chatBox.scrollHeight;
+    // Build country dropdown
+    const sel = $("#countrySelect");
+    Object.entries(CFG.countries).forEach(([code, c]) => {
+      const opt = document.createElement("option");
+      opt.value = code; opt.textContent = `${c.name} (${code})`;
+      sel.appendChild(opt);
+    });
+
+    // Determine country from localStorage or default
+    function setCountry(code){
+      const conf = CFG.countries[code] || CFG.countries[CFG.defaultCountry];
+      localStorage.setItem("skvCountry", code);
+      document.documentElement.lang = conf.lang || "en";
+      ccEl.textContent = code;
+      $("#contactBadge").textContent = `📞 ${conf.contact.phone} • ${conf.contact.email}`;
+      const wa = `https://wa.me/${conf.contact.whatsapp || ""}`;
+      const waLink = $("#waLink");
+      waLink.href = wa;
+      waLink.textContent = "WhatsApp Us";
     }
-    seed.forEach(m => bubble(m.role,m.text));
 
-    sendBtn.addEventListener('click', () => {
-      const msg = (chatInput.value || '').trim();
+    // Optional: auto-detect from subdomain (ae., in., sa., qa.)
+    (function autoCountryFromSubdomain(){
+      const host = location.hostname;
+      const sub = host.split(".")[0].toUpperCase();
+      if (CFG.countries[sub]) {
+        sel.value = sub;
+      } else {
+        sel.value = localStorage.getItem("skvCountry") || CFG.defaultCountry;
+      }
+      setCountry(sel.value);
+    })();
+
+    sel.addEventListener("change", () => setCountry(sel.value));
+
+    function pushBot(text){
+      const row = document.createElement("div"); row.className = "bot";
+      const b = document.createElement("div"); b.className = "bubble"; b.textContent = text;
+      row.appendChild(b); chat.appendChild(row); chat.scrollTop = chat.scrollHeight;
+    }
+    function pushMe(text){
+      const row = document.createElement("div"); row.className = "me";
+      const b = document.createElement("div"); b.className = "bubble"; b.textContent = text;
+      row.appendChild(b); chat.appendChild(row); chat.scrollTop = chat.scrollHeight;
+    }
+
+    async function send(){
+      const msg = $("#user").value.trim();
       if(!msg) return;
-      bubble('user', msg);
-      chatInput.value = '';
-      setTimeout(() => bubble('assistant', 'Thanks! A member of our team will reach out shortly.'), 600);
-    });
+      $("#user").value = "";
+      pushMe(msg);
+      statusEl.textContent = "Connecting...";
+      const country = ccEl.textContent.trim();
 
-    // Demo section autotype
-    const demoBox = document.getElementById('demoBox');
-    const demoMsgs = [
-      ['user','What is SKVChatGB?'],
-      ['assistant','An AI chatbot platform that answers with your content & brand tone.'],
-      ['user','How fast is setup?'],
-      ['assistant','Usually under 10 minutes for a website widget.']
-    ];
-    demoMsgs.forEach(([r,t],i)=>{
-      setTimeout(()=>bubbleDemo(r,t), i*900);
-    });
-    function bubbleDemo(role, text){
-      const row = document.createElement('div');
-      row.className = role==='user' ? 'flex justify-end' : 'flex';
-      const b = document.createElement('div');
-      b.className = 'max-w-[85%] rounded-2xl px-4 py-3 ' + (role==='user' ? 'bg-white/15' : 'bg-white/5');
-      b.textContent = text;
-      row.appendChild(b);
-      demoBox.appendChild(row);
+      // Prefer /api/chat-country; fallback to /api/chat if not present
+      let endpoint = "/api/chat-country";
+      try {
+        const ping = await fetch("/api/health").then(r=>r.ok).catch(()=>false);
+        // if /api/health exists but country route 404s, fallback inside catch below
+      } catch {}
+      try {
+        const res = await fetch(endpoint, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ user: msg, country })
+        });
+        if(res.status === 404){
+          // fallback
+          return await sendFallback(msg);
+        }
+        if (!res.ok || !res.body) {
+          const t = await res.text(); statusEl.textContent = "Error";
+          pushBot(t || "Server error"); return;
+        }
+        statusEl.textContent = "Streaming...";
+        const reader = res.body.getReader();
+        const decoder = new TextDecoder();
+        let acc = "";
+        while(true){
+          const {value, done} = await reader.read();
+          if(done) break;
+          acc += decoder.decode(value, {stream:true});
+        }
+        pushBot(acc || ""); statusEl.textContent = "Done";
+      } catch (e) {
+        await sendFallback(msg);
+      }
     }
+
+    async function sendFallback(msg){
+      statusEl.textContent = "Fallback...";
+      try{
+        const res = await fetch("/api/chat", {
+          method:"POST",
+          headers:{ "Content-Type":"application/json" },
+          body: JSON.stringify({ user: msg, system: CFG.countries[$("#countrySelect").value].system })
+        });
+        const text = await res.text();
+        pushBot(text || ""); statusEl.textContent = "Done";
+      }catch(e){
+        pushBot("Unable to reach server."); statusEl.textContent = "Error";
+      }
+    }
+
+    $("#send").addEventListener("click", send);
+    $("#user").addEventListener("keydown", e => {
+      if(e.key === "Enter" && !e.shiftKey){ e.preventDefault(); send(); }
+    });
   </script>
 </body>
 </html>
