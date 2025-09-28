@@ -1,0 +1,154 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+ 
+@layer base {
+  :root {
+    --background: 210 40% 7%;
+    --foreground: 213 31% 91%;
+    --card: 210 40% 9%;
+    --card-foreground: 213 31% 91%;
+    --popover: 210 40% 9%;
+    --popover-foreground: 213 31% 91%;
+    --primary: 199 89% 48%;
+    --primary-foreground: 210 40% 98%;
+    --secondary: 210 40% 11%;
+    --secondary-foreground: 213 31% 91%;
+    --muted: 210 40% 13%;
+    --muted-foreground: 215 20% 65%;
+    --accent: 210 40% 15%;
+    --accent-foreground: 213 31% 91%;
+    --destructive: 0 62% 56%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 210 40% 18%;
+    --input: 210 40% 16%;
+    --ring: 199 89% 48%;
+    --radius: 0.75rem;
+  }
+ 
+  .light {
+    --background: 0 0% 100%;
+    --foreground: 210 40% 9%;
+    --card: 0 0% 100%;
+    --card-foreground: 210 40% 9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 210 40% 9%;
+    --primary: 199 89% 48%;
+    --primary-foreground: 210 40% 98%;
+    --secondary: 210 40% 96%;
+    --secondary-foreground: 210 40% 9%;
+    --muted: 210 40% 96%;
+    --muted-foreground: 215 16% 47%;
+    --accent: 210 40% 96%;
+    --accent-foreground: 210 40% 9%;
+    --destructive: 0 62% 56%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 210 40% 89%;
+    --input: 210 40% 89%;
+    --ring: 199 89% 48%;
+  }
+}
+ 
+@layer base {
+  * {
+    @apply border-border;
+  }
+  
+  body {
+    @apply bg-background text-foreground;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+
+  /* Custom scrollbar */
+  ::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  ::-webkit-scrollbar-track {
+    @apply bg-muted;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply bg-muted-foreground/50 rounded-full;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-muted-foreground/70;
+  }
+
+  /* Smooth animations */
+  * {
+    @apply transition-colors duration-200;
+  }
+}
+
+@layer components {
+  .gradient-bg {
+    background: linear-gradient(
+      135deg,
+      hsl(var(--background)) 0%,
+      hsl(var(--background)) 20%,
+      hsl(var(--muted)) 50%,
+      hsl(var(--background)) 100%
+    );
+  }
+
+  .glass-effect {
+    @apply backdrop-blur-md bg-background/80 border border-border/50;
+  }
+
+  .chat-bubble {
+    @apply max-w-[80%] px-4 py-2 rounded-2xl break-words;
+  }
+
+  .chat-bubble.user {
+    @apply bg-primary text-primary-foreground ml-auto rounded-br-md;
+  }
+
+  .chat-bubble.assistant {
+    @apply bg-muted text-muted-foreground mr-auto rounded-bl-md;
+  }
+
+  .typing-indicator {
+    @apply flex space-x-1;
+  }
+
+  .typing-dot {
+    @apply w-2 h-2 bg-muted-foreground rounded-full animate-bounce;
+    animation-delay: 0s;
+  }
+
+  .typing-dot:nth-child(2) {
+    animation-delay: 0.2s;
+  }
+
+  .typing-dot:nth-child(3) {
+    animation-delay: 0.4s;
+  }
+
+  .feature-card {
+    @apply p-6 rounded-xl border border-border/50 bg-card/50 backdrop-blur-sm;
+    @apply hover:bg-card/80 hover:border-border transition-all duration-300;
+    @apply hover:shadow-lg hover:shadow-primary/10;
+  }
+
+  .hero-glow {
+    @apply relative;
+  }
+
+  .hero-glow::before {
+    content: '';
+    @apply absolute inset-0 rounded-full blur-3xl opacity-30;
+    background: linear-gradient(45deg, hsl(var(--primary)), hsl(var(--accent)));
+    animation: pulse-glow 3s ease-in-out infinite;
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+  }
+
+  .floating {
+    animation: float 3s ease-in-out infinite;
+  }
+}
