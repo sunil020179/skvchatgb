@@ -100,3 +100,106 @@ export interface WebSocketMessage {
   userId?: string
   timestamp: Date
 }
+
+// Invoice System Types
+export interface InvoiceItem {
+  id: string
+  description: string
+  quantity: number
+  unitPrice: number
+  totalPrice: number
+  taxable: boolean
+}
+
+export interface TaxCalculation {
+  taxType: string
+  rate: number
+  amount: number
+  description: string
+}
+
+export interface CompanyInfo {
+  name: string
+  address: string[]
+  email: string
+  phone: string
+  website?: string
+  logo?: string
+  taxNumber?: string
+  registrationNumber?: string
+}
+
+export interface ClientInfo {
+  name: string
+  company?: string
+  email: string
+  address: string[]
+  taxNumber?: string
+  country: string
+}
+
+export interface Invoice {
+  id: string
+  invoiceNumber: string
+  date: Date
+  dueDate: Date
+  issueDate: Date
+  
+  // Company and client information
+  company: CompanyInfo
+  client: ClientInfo
+  
+  // Invoice details
+  items: InvoiceItem[]
+  subtotal: number
+  taxes: TaxCalculation[]
+  totalTax: number
+  total: number
+  
+  // Payment and status
+  currency: string
+  status: 'draft' | 'sent' | 'paid' | 'overdue' | 'cancelled'
+  paymentTerms: string
+  notes?: string
+  
+  // Country-specific
+  country: string
+  locale: string
+  
+  // Audit trail
+  createdAt: Date
+  updatedAt: Date
+  createdBy?: string
+}
+
+export interface CountryTaxConfig {
+  country: string
+  currency: string
+  locale: string
+  taxes: {
+    vat?: {
+      rate: number
+      name: string
+      description: string
+    }
+    gst?: {
+      cgst: number
+      sgst: number
+      igst: number
+      name: string
+      description: string
+    }
+    corporateTax?: {
+      rate: number
+      name: string
+      description: string
+    }
+    serviceCharge?: {
+      rate: number
+      name: string
+      description: string
+    }
+  }
+  paymentTerms: string
+  legalRequirements: string[]
+}
