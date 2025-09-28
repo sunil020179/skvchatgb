@@ -128,6 +128,9 @@ export default function HomePage() {
               <a href="#demo" className="text-muted-foreground hover:text-foreground transition-colors">
                 Demo
               </a>
+              <a href="/invoice" className="text-muted-foreground hover:text-foreground transition-colors">
+                Invoice
+              </a>
               <a href="#contact" className="text-muted-foreground hover:text-foreground transition-colors">
                 Contact
               </a>
@@ -306,6 +309,21 @@ export default function HomePage() {
                 <p className="text-muted-foreground">
                   Instant responses to your business queries with expert-level accuracy
                 </p>
+              </CardContent>
+            </Card>
+
+            <Card className="feature-card text-center">
+              <CardContent className="pt-6">
+                <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-gradient-to-br from-green-500/20 to-green-500/10 flex items-center justify-center">
+                  <div className="w-8 h-8 rounded-full bg-green-500"></div>
+                </div>
+                <h3 className="text-xl font-semibold mb-2">Smart Invoice System</h3>
+                <p className="text-muted-foreground">
+                  Professional invoice generation with country-specific tax calculations
+                </p>
+                <a href="/invoice" className="inline-block mt-2 text-primary hover:underline text-sm font-medium">
+                  Try Invoice Generator →
+                </a>
               </CardContent>
             </Card>
 
